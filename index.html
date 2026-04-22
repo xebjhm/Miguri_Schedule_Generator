@@ -363,8 +363,8 @@
                             <p className="text-xs text-gray-500 mt-1">長押しで保存・共有できます</p>
                         </div>
 
-                        <div className="p-4 bg-gray-200 flex justify-center items-center flex-1 min-h-0">
-                            <img src={imageUrl} alt="Schedule Result" className="max-w-full max-h-full w-auto h-auto object-contain rounded-lg shadow-md select-none" style={{WebkitTouchCallout: 'default'}} />
+                        <div className="p-4 bg-gray-200 flex justify-center items-center flex-1 min-h-0 overflow-hidden">
+                            <img src={imageUrl} alt="Schedule Result" className="rounded-lg shadow-md select-none" style={{WebkitTouchCallout: 'default', maxWidth: '100%', maxHeight: 'calc(100dvh - 12rem)', width: 'auto', height: 'auto', objectFit: 'contain'}} />
                         </div>
 
                         <div className="p-4 shrink-0">
