@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>ミーグリ予定表ジェネレーター</title>
+    <title>ミーグリ予定まとめくん</title>
     
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -73,7 +73,6 @@
             }
         };
 
-        const EVENT_TYPES = ['ミーグリ', 'リアミ'];
         const SINGLE_TYPES = ['シングル', 'アルバム'];
 
         const MEMBERS_BY_GROUP = {
@@ -189,7 +188,6 @@
             memberRomaji: "Takai Rika",
             singleNumber: 17,
             singleType: 'シングル',
-            eventType: 'ミーグリ',
             dates: [
                 { id: 1, dateLabel: "2月1日 (土)", parts: [0, 1, 2, 2, 0, 2] },
                 { id: 2, dateLabel: "2月22日 (土)", parts: [0, 0, 0, 0, 5, 6] },
@@ -390,17 +388,17 @@
             const previewRef = useRef(null);
 
             useEffect(() => {
-                const savedData = localStorage.getItem('miguri_data_v24');
+                const savedData = localStorage.getItem('miguri_data_v25');
                 if (savedData) {
                     try {
                         const parsed = JSON.parse(savedData);
-                        if (!EVENT_TYPES.includes(parsed.eventType)) parsed.eventType = 'ミーグリ';
                         if (!SINGLE_TYPES.includes(parsed.singleType)) parsed.singleType = 'シングル';
+                        delete parsed.eventType;
                         setData({ ...DEFAULT_DATA, ...parsed });
                     } catch (e) { console.error(e); }
                 }
             }, []);
-            useEffect(() => { localStorage.setItem('miguri_data_v24', JSON.stringify(data)); }, [data]);
+            useEffect(() => { localStorage.setItem('miguri_data_v25', JSON.stringify(data)); }, [data]);
 
             const updatePart = (dIndex, pIndex, val) => {
                 const newDates = [...data.dates];
@@ -531,7 +529,7 @@
                     <nav className="bg-white/80 backdrop-blur-md sticky top-0 z-40 border-b border-gray-100 px-4 py-3 flex justify-between items-center shadow-sm shrink-0">
                         <div className="flex items-center gap-2">
                             <div className="w-8 h-8 rounded-lg flex items-center justify-center text-white font-bold shadow-sm" style={{background: theme.bgIcon}}>46</div>
-                            <h1 className="font-bold text-gray-700">ミーグリ予定表ジェネレーター</h1>
+                            <h1 className="font-bold text-gray-700">ミーグリ予定まとめくん</h1>
                         </div>
                         <button onClick={resetData} className="p-2 text-gray-400 hover:text-red-500 transition"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"/><path d="M3 3v5h5"/></svg></button>
                     </nav>
@@ -578,11 +576,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div className="flex gap-2">
-                                            {EVENT_TYPES.map(t => (
-                                                <button key={t} onClick={() => setData({...data, eventType: t})} className={`flex-1 py-2 rounded-lg font-bold text-sm transition ${data.eventType === t ? 'text-white shadow' : 'bg-gray-50 text-gray-400 border border-gray-200'}`} style={{backgroundColor: data.eventType === t ? theme.bgIcon : undefined}}>{t}</button>
-                                            ))}
-                                        </div>
                                     </div>
                                 </div>
 
@@ -610,7 +603,7 @@
                                 </div>
                             </div>
 
-                            <div className={`flex flex-col items-center ${activeTab === 'preview' ? 'block' : 'hidden lg:flex'}`}>
+                            <div className={`flex-col items-center ${activeTab === 'preview' ? 'flex' : 'hidden lg:flex'}`}>
                                 <div className="bg-gray-800 text-white rounded-full px-6 py-3 mb-6 flex items-center gap-3 shadow-xl cursor-pointer hover:scale-105 transition active:scale-95" onClick={handleGenerate}>
                                     {isGenerating ? <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin"></div> : <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>}
                                     <span className="font-bold text-sm">画像を生成</span>
@@ -640,7 +633,7 @@
                                                         <div className="text-xs font-medium opacity-85 tracking-wide mt-1">{data.singleNumber}th {data.singleType}</div>
                                                     </div>
                                                     <span className="inline-block bg-white/25 border border-white/40 px-3.5 py-1 rounded-md text-sm font-bold tracking-wider backdrop-blur-sm">
-                                                        <span className="fix-badge-text-inner">{data.eventType}</span>
+                                                        <span className="fix-badge-text-inner">ミーグリ</span>
                                                     </span>
                                                 </div>
                                             </div>
